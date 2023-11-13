@@ -1,6 +1,6 @@
 ---
 title: "Extinctions Unit"
-author: "Your name, partner name"
+author: "Jiawen Tang, Mark Sun"
 maketitle: true
 output: github_document
 ---
