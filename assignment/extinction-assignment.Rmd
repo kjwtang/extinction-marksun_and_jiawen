@@ -26,10 +26,14 @@ x$speciescount
 ```{r}
 species_endpoint <-"species"
 page <-"page/0"
+page1 <- "page/1"
 page0 <- glue("{base}/{species_endpoint}/{page}?token={token}")
+page.1 <- glue("{base}/{species_endpoint}/{page1}?token={token}")
 x2 <-GET(page0)
-x2
+#x2
+x3 <-GET(page.1)
 ```
+
 ```{r}
 page0_resp <-content(x2)
 
@@ -37,6 +41,11 @@ page0_resp <-content(x2)
 sci_name <- map_chr(page0_resp$result,"scientific_name")
 head(sci_name)
 
+page1_resp <-content(x3)
+
+#page0_resp$result[[1]]
+sci_name1 <- map_chr(page1_resp$result,"scientific_name")
+head(sci_name1)
 ```
 
 
