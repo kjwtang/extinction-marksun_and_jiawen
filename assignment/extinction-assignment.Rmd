@@ -25,28 +25,47 @@ x$speciescount
 
 ```{r}
 species_endpoint <-"species"
-page <-"page/0"
+page <- paste0("page/", 0:15)
 page1 <- "page/1"
-page0 <- glue("{base}/{species_endpoint}/{page}?token={token}")
-page.1 <- glue("{base}/{species_endpoint}/{page1}?token={token}")
-x2 <-GET(page0)
-#x2
-x3 <-GET(page.1)
+all_pages <- glue("{base}/{species_endpoint}/{page}?token={token}")
 ```
 
 ```{r}
-page0_resp <-content(x2)
-
-#page0_resp$result[[1]]
-sci_name <- map_chr(page0_resp$result,"scientific_name")
-head(sci_name)
-
-page1_resp <-content(x3)
-
-#page0_resp$result[[1]]
-sci_name1 <- map_chr(page1_resp$result,"scientific_name")
-head(sci_name1)
+if(!file.exists("all_species.rds")) {
+  all_species <- map(all_pages, GET)
+  write_rds(all_species, "all_species.rds")
+}
 ```
+
+```{r}
+all_species<- read_rds("all_species.rds")
+```
+
+
+```{r}
+codes <- map_int(all_species, status_code)
+stopifnot(all(codes < 400))
+all_resp <- map(all_species, content, encoding = "UTF-8")
+```
+
+```{r}
+sci_name <- map(all_resp, \(page) map_chr(page$result,"scientific_name"))
+x2 <- unlist(sci_name)
+all_species <- tibble(sci_name, category)
+extinct_species <- all_species |> filter(category %in% c("CR","EX"))
+```
+
+
+```{r}
+#page0_resp <-content(x2)
+#page0_resp$result[[1]]
+#sci_name <- map_chr(page0_resp$result,"scientific_name")
+#head(sci_name)
+#category <- map_chr(page0_resp$result,"category")
+#all_species <- tibble(sci_name,category)
+#x4 |> 
+```
+
 
 
 ## Extinctions Module
