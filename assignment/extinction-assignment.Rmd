@@ -33,6 +33,7 @@ all_pages <- glue("{base}/{species_endpoint}/{page}?token={token}")
 ```{r}
 if(!file.exists("all_species.rds")) {
   all_species <- map(all_pages, GET)
+  map(all_species,stop_for_status)
   write_rds(all_species, "all_species.rds")
 }
 ```
@@ -43,29 +44,58 @@ all_species<- read_rds("all_species.rds")
 
 
 ```{r}
-codes <- map_int(all_species, status_code)
-stopifnot(all(codes < 400))
+#codes <- map_int(all_species, status_code)
+#stopifnot(all(codes < 400))
 all_resp <- map(all_species, content, encoding = "UTF-8")
 ```
 
 ```{r}
-sci_name <- map(all_resp, \(page) map_chr(page$result,"scientific_name"))
-x2 <- unlist(sci_name)
+sci_name <- map(all_resp, \(page) map_chr(page$result,"scientific_name")) |>
+  list_c()
+category <-
+  map(all_resp,\(page) map_chr(page$result,"category")) |>
+  list_c()
 all_species <- tibble(sci_name, category)
-extinct_species <- all_species |> filter(category %in% c("CR","EX"))
+
+extinct_species <- all_species |> filter(category == "EX")
+extinct_species
+```
+```{r}
+sp <-extinct_species$sci_name
+ex_urls <-glue("{base}/species/narrative/{sp}?token={token}")|>
+  URLencode()
 ```
 
 
 ```{r}
-#page0_resp <-content(x2)
-#page0_resp$result[[1]]
-#sci_name <- map_chr(page0_resp$result,"scientific_name")
-#head(sci_name)
-#category <- map_chr(page0_resp$result,"category")
-#all_species <- tibble(sci_name,category)
-#x4 |> 
+
+if(!file.exists("ex_narrative.rds")) {
+  ex_narrative <- map(ex_urls, GET)
+  map(ex_narrative,stop_for_status,.progress = TRUE)
+  write_rds(ex_narrative, "ex_narrative.rds")
+}
+
 ```
 
+
+```{r}
+narrative_contents <- map(ex_narrative,content)
+narrative_population <- map(narrative_contents,
+                            \(content) map_chr(content$result[1],"population",.default = ""))
+head(narrative_population,20)
+#narrative_rationale <- map(narrative_contents,\(content)
+                           #content$result[[1]]$rationale)
+
+```
+
+
+
+```{r}
+last_seen <-narrative_population |>
+  map_chr(str_extract,"\\d{4}") |>
+  as.integer()
+tibble(sp,last_seen)
+```
 
 
 ## Extinctions Module
