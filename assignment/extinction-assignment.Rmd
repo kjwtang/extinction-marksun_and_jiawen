@@ -77,6 +77,10 @@ if(!file.exists("ex_narrative.rds")) {
 
 ```
 
+```{r}
+ex_narrative <-read_rds("ex_narrative.rds")
+```
+
 
 ```{r}
 narrative_contents <- map(ex_narrative,content)
