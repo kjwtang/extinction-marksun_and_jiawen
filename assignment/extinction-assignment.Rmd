@@ -14,13 +14,18 @@ library("glue")
 knitr::opts_chunk$set(comment=NA)
 ```
 
+# ```{r}
+# base <- "https://apiv3.iucnredlist.org/api/v3"
+# endpoint <- "speciescount"
+# token <- "9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee"
+# req <- GET(glue("{base}/{endpoint}?token={token}"))
+# x = content(req)
+# x$speciescount
+# ```
+
 ```{r}
-base <- "https://apiv3.iucnredlist.org/api/v3"
-endpoint <- "speciescount"
-token <- "9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee"
-req <- GET(glue("{base}/{endpoint}?token={token}"))
-x = content(req)
-x$speciescount
+download.file("https://github.com/espm-157/extinction-template/releases/download/data2.0/extinction-data.zip", "extinction-data.zip")
+unzip("extinction-data.zip")
 ```
 
 ```{r}
@@ -55,23 +60,24 @@ sci_name <- map(all_resp, \(page) map_chr(page$result,"scientific_name")) |>
 category <-
   map(all_resp,\(page) map_chr(page$result,"category")) |>
   list_c()
-all_species <- tibble(sci_name, category)
+class <-
+  map(all_resp,\(page) map_chr(page$result,"class_name")) |>
+  list_c()
+all_species <- tibble(sci_name, category,class)
 
 extinct_species <- all_species |> filter(category == "EX")
 extinct_species
 ```
 ```{r}
-sp <-extinct_species$sci_name
-ex_urls <-glue("{base}/species/narrative/{sp}?token={token}")|>
-  URLencode()
+sci_names <-extinct_species$sci_name
 ```
 
 
 ```{r}
 
 if(!file.exists("ex_narrative.rds")) {
-  ex_narrative <- map(ex_urls, GET)
-  map(ex_narrative,stop_for_status,.progress = TRUE)
+  ex_narrative <- map(all_pages, GET)
+  #map(ex_narrative,stop_for_status,.progress = TRUE)
   write_rds(ex_narrative, "ex_narrative.rds")
 }
 
@@ -86,9 +92,8 @@ ex_narrative <-read_rds("ex_narrative.rds")
 narrative_contents <- map(ex_narrative,content)
 narrative_population <- map(narrative_contents,
                             \(content) map_chr(content$result[1],"population",.default = ""))
-head(narrative_population,20)
-#narrative_rationale <- map(narrative_contents,\(content)
-                           #content$result[[1]]$rationale)
+#head(narrative_population,20)
+narrative_rationale <- map(narrative_contents,\(content) content$result[[1]]$rationale)
 
 ```
 
@@ -98,7 +103,9 @@ head(narrative_population,20)
 last_seen <-narrative_population |>
   map_chr(str_extract,"\\d{4}") |>
   as.integer()
-tibble(sp,last_seen)
+extintion_dates <- tibble(sci_names,last_seen, class) |> distinct()
+combined <- all_species |> left_join(extintion_dates)
+
 ```
 
 
