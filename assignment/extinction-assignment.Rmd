@@ -69,7 +69,7 @@ extinct_species <- all_species |> filter(category == "EX")
 extinct_species
 ```
 ```{r}
-sci_names <-extinct_species$sci_name
+ex_sci_name <-extinct_species$sci_name
 ```
 
 
@@ -103,8 +103,9 @@ narrative_rationale <- map(narrative_contents,\(content) content$result[[1]]$rat
 last_seen <-narrative_population |>
   map_chr(str_extract,"\\d{4}") |>
   as.integer()
-extintion_dates <- tibble(sci_names,last_seen, class) |> distinct()
+extintion_dates <- tibble(sci_name = ex_sci_name,last_seen) |> distinct()
 combined <- all_species |> left_join(extintion_dates)
+
 
 ```
 
