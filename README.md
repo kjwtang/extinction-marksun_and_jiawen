@@ -1,10 +1,10 @@
 
-*add gh-actions badge here*
+[![Reproducibility](https://github.com/espm-157/extinction-marksun_and_jiawen/actions/workflows/main.yml/badge.svg)](https://github.com/espm-157/extinction-marksun_and_jiawen/actions/workflows/main.yml)
 
 ## Team Members:
 
-- full name, github handle
-- full name, github handle
+- Jiawen Tang, kjwtang
+- Mark Sun, github handle
 
 This repository is a template for your team's repository.
 
