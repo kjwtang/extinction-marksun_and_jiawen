@@ -68,6 +68,7 @@ all_species <- tibble(sci_name, category,class)
 extinct_species <- all_species |> filter(category == "EX")
 extinct_species
 ```
+
 ```{r}
 ex_sci_name <-extinct_species$sci_name
 ```
