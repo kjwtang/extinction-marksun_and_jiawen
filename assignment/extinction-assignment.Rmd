@@ -108,14 +108,45 @@ combined <- all_species |> left_join(extintion_dates)
 total_sp <- combined |> 
   filter(class %in% c('MAMMALIA', 'AVES','AMPHIBIA','REPTILIA', 'ACTINOPTERYGII')) |>
   count(class, name = "total")
-combined |> 
+final_tbl <- combined |> 
   filter(category == "EX") |>
+  filter(class %in% c('MAMMALIA', 'AVES','AMPHIBIA','REPTILIA', 'ACTINOPTERYGII')) |>
   mutate(last_seen = replace_na(last_seen, 2023),
          century = str_extract(last_seen, "\\d{2}")) |>
   count(century, class) |>
   left_join(total_sp) |>
-  mutate(extinct_perc = (n/total) *100)
+  mutate(extinct_perc = (n/total) *10000)|> # extinctions per million-species-years
+  mutate(century = as.numeric(century),
+         century = ifelse(century < 21, century + 1, 21))
+final_tbl
 ```
+
+```{r}
+cum_data <- final_tbl %>%
+  group_by(class) %>%
+  arrange(century) %>%
+  mutate(cum_extinction = cumsum(n) / total * 100)
+
+# Remove grouping to return to the original state
+cum_data <- ungroup(cum_data)
+```
+
+```{r}
+background_slope <- 0.006
+
+ggplot(cum_data, aes(x = century, y = cum_extinction, color = class)) +
+  geom_line() +
+  geom_abline(aes(intercept = 0.002, slope = background_slope),
+              linetype = "dashed", color = "red") +
+  annotate("text", x = 18, y = 0.1, label = "Background Extinction Rate", color = "red") +
+  labs(title = "Cumulative Extinction Over Centuries",
+       x = "Century",
+       y = "Cumulative Extinction") +
+  scale_x_continuous(breaks = seq(15, 21, by = 1)) +
+  theme_minimal()
+```
+
+
 
 
 ## Extinctions Module

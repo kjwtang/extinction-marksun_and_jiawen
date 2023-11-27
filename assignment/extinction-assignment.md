@@ -109,31 +109,74 @@ combined <- all_species |> left_join(extintion_dates)
 total_sp <- combined |> 
   filter(class %in% c('MAMMALIA', 'AVES','AMPHIBIA','REPTILIA', 'ACTINOPTERYGII')) |>
   count(class, name = "total")
-combined |> 
+final_tbl <- combined |> 
   filter(category == "EX") |>
+  filter(class %in% c('MAMMALIA', 'AVES','AMPHIBIA','REPTILIA', 'ACTINOPTERYGII')) |>
   mutate(last_seen = replace_na(last_seen, 2023),
          century = str_extract(last_seen, "\\d{2}")) |>
   count(century, class) |>
   left_join(total_sp) |>
-  mutate(extinct_perc = (n/total) *100)
+  mutate(extinct_perc = (n/total) *10000)|> # extinctions per million-species-years
+  mutate(century = as.numeric(century),
+         century = ifelse(century < 21, century + 1, 21))
 ```
 
     Joining with `by = join_by(class)`
 
-    # A tibble: 54 × 5
+``` r
+final_tbl
+```
+
+    # A tibble: 20 × 5
        century class              n total extinct_perc
-       <chr>   <chr>          <int> <int>        <dbl>
-     1 14      MAMMALIA           1  6427      0.0156 
-     2 15      MAMMALIA           3  6427      0.0467 
-     3 16      AVES               1 11188      0.00894
-     4 17      AVES               1 11188      0.00894
-     5 17      MAGNOLIOPSIDA      2    NA     NA      
-     6 17      MAMMALIA           1  6427      0.0156 
-     7 18      ACTINOPTERYGII     4 24223      0.0165 
-     8 18      AMPHIBIA           9  7487      0.120  
-     9 18      ARACHNIDA          5    NA     NA      
-    10 18      AVES               4 11188      0.0358 
-    # ℹ 44 more rows
+         <dbl> <chr>          <int> <int>        <dbl>
+     1      15 MAMMALIA           1  6427        1.56 
+     2      16 MAMMALIA           3  6427        4.67 
+     3      17 AVES               1 11188        0.894
+     4      18 AVES               1 11188        0.894
+     5      18 MAMMALIA           1  6427        1.56 
+     6      19 ACTINOPTERYGII     4 24223        1.65 
+     7      19 AMPHIBIA           9  7487       12.0  
+     8      19 AVES               4 11188        3.58 
+     9      19 MAMMALIA          10  6427       15.6  
+    10      19 REPTILIA          11 10283       10.7  
+    11      20 ACTINOPTERYGII    51 24223       21.1  
+    12      20 AMPHIBIA          21  7487       28.0  
+    13      20 AVES               6 11188        5.36 
+    14      20 MAMMALIA          26  6427       40.5  
+    15      20 REPTILIA           8 10283        7.78 
+    16      21 ACTINOPTERYGII    32 24223       13.2  
+    17      21 AMPHIBIA           6  7487        8.01 
+    18      21 AVES             147 11188      131.   
+    19      21 MAMMALIA          53  6427       82.5  
+    20      21 REPTILIA          13 10283       12.6  
+
+``` r
+cum_data <- final_tbl %>%
+  group_by(class) %>%
+  arrange(century) %>%
+  mutate(cum_extinction = cumsum(n) / total * 100)
+
+# Remove grouping to return to the original state
+cum_data <- ungroup(cum_data)
+```
+
+``` r
+background_slope <- 0.006
+
+ggplot(cum_data, aes(x = century, y = cum_extinction, color = class)) +
+  geom_line() +
+  geom_abline(aes(intercept = 0.002, slope = background_slope),
+              linetype = "dashed", color = "red") +
+  annotate("text", x = 18, y = 0.1, label = "Background Extinction Rate", color = "red") +
+  labs(title = "Cumulative Extinction Over Centuries",
+       x = "Century",
+       y = "Cumulative Extinction") +
+  scale_x_continuous(breaks = seq(15, 21, by = 1)) +
+  theme_minimal()
+```
+
+![](extinction-assignment_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ## Extinctions Module
 
