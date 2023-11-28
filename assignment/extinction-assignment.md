@@ -11,8 +11,8 @@ compare to background extinction rates?
 
 ## Background
 
--   [Section Intro Video](https://youtu.be/QsH6ytm89GI)
--   [Ceballos et al (2015)](http://doi.org/10.1126/sciadv.1400253)
+- [Section Intro Video](https://youtu.be/QsH6ytm89GI)
+- [Ceballos et al (2015)](http://doi.org/10.1126/sciadv.1400253)
 
 Our focal task will be to reproduce the result from Ceballos and
 colleagues showing the recent increase in extinction rates relative to
@@ -22,6 +22,8 @@ the background rate:
 
 Before everything starts, we will set up the functions that we need to
 use to run the code”
+
+## Data Download
 
 We will download the data taht we need from ICUN redlist so we can start
 do anlysis from it. Since the orginal website is slow as multiple
@@ -109,6 +111,8 @@ Read the rds file and we will start finding the extinction rate.
 ex_narrative <-read_rds("ex_narrative.rds")
 ```
 
+## Data Conversion
+
 So we want to use map function to extract the information from the rds
 file to the list of words that can have information about the extinction
 data. These information will be in plain text that is not in a
@@ -125,8 +129,10 @@ So how are we going to get dates from plain text? Regular expressions.
 We start simple and just grab any 4-digit numbers, we will just trust it
 as year (which there are two errors and we ignore it with the huge data
 set we have). Now we will find out the extinction time and species
-catagory. We will group by class, arrange by century, and limit it for
-the five big vertebrates.
+category. We will group by class, arrange by century, and limit it for
+the five big vertebrates. We will have numbers of extinction in each
+species and order by centuries; we will calculate the extinctions per
+million-species-years, to see what will present use the extinction rate.
 
 ``` r
 last_seen <-narrative_population |>
@@ -184,6 +190,11 @@ final_tbl
     19      21 MAMMALIA          53  6427       82.5  
     20      21 REPTILIA          13 10283       12.6  
 
+## Data Visualization
+
+Now we want to make cumulative extinction rates, so we do mutate a new
+rate of extinction.
+
 ``` r
 cum_data <- final_tbl %>%
   group_by(class) %>%
@@ -193,6 +204,12 @@ cum_data <- final_tbl %>%
 # Remove grouping to return to the original state
 cum_data <- ungroup(cum_data)
 ```
+
+Finally, we will plot out the graph that have century on the x-axis as
+time, the extinction per million species per years conversion on the
+y-axis, and the five chosen species as the lines on the graph. We also
+added a background extinction rate of 2 species per million per year,
+indicated on the graph.
 
 ``` r
 background_slope <- 2
@@ -214,9 +231,36 @@ ggplot(cum_data, aes(x = century, y = cum_extinction, color = class)) +
 
 ![](extinction-assignment_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
+## Conclusion
+
+Compared to the original image, the current image lacks data on earlier
+extinctions. Although the data are consistent in the 21st century, we
+find little record of sustained extinctions in the 15th to 17th
+centuries. This is related to the method we use to find the year, we
+only consider the four-digit number to be the year when extracting the
+data, which makes us have A lot of early data without a specific year
+and recorded in the century can not be extracted, resulting in a large
+number of N/A. To ensure our statistical accuracy, we have to date these
+extinctions to 2023 to reduce the impact of changes in the image. This
+also resulted in a relatively low rate of early extinction. In addition,
+our analysis divided vertebrates into five parts instead of four, which
+also affected the trend of some data. Finally, we extracted two data
+years incorrectly in the process of judgment, but we corrected them.
+
+In general, with the increase of human activities and the increase of
+human population and industrial level, we have significantly higher than
+the background extinction rate, which proves that we have entered the
+sixth mass extinction with a high probability. And the rate of change in
+this extinction is fast enough to prove that it was caused by human
+activity. In the future, we need to continue to pay attention to the
+ecological impact of extinction, which may lead to further destruction
+of the fragile environment suitable for human survival. In a warming
+climate, extinction rates will only increase. We need to pay special
+attention, otherwise the future extinction may be the human race.
+
 ## Additional references:
 
--   <http://www.hhmi.org/biointeractive/biodiversity-age-humans> (Video)
--   [Barnosky et al. (2011)](http://doi.org/10.1038/nature09678)
--   [Pimm et al (2014)](http://doi.org/10.1126/science.1246752)
--   [Sandom et al (2014)](http://dx.doi.org/10.1098/rspb.2013.3254)
+- <http://www.hhmi.org/biointeractive/biodiversity-age-humans> (Video)
+- [Barnosky et al. (2011)](http://doi.org/10.1038/nature09678)
+- [Pimm et al (2014)](http://doi.org/10.1126/science.1246752)
+- [Sandom et al (2014)](http://dx.doi.org/10.1098/rspb.2013.3254)
