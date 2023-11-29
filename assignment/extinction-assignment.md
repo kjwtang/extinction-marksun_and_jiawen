@@ -256,11 +256,11 @@ attention, otherwise the future extinction may be the human race.
 
 ## References:
 
-- [Section Intro
-  Video](%5Bhttps://youtu.be/QsH6ytm89GI)\](<https://youtu.be/QsH6ytm89GI>))
-- [Ceballos et al
-  (2015)](%5Bhttp://doi.org/10.1126/sciadv.1400253)\](<http://doi.org/10.1126/sciadv.1400253>))
-- <http://www.hhmi.org/biointeractive/biodiversity-age-humans> (Video)
-- [Barnosky et al. (2011)](http://doi.org/10.1038/nature09678)
-- [Pimm et al (2014)](http://doi.org/10.1126/science.1246752)
-- [Sandom et al (2014)](http://dx.doi.org/10.1098/rspb.2013.3254)
+-   [Section Intro
+    Video](%5Bhttps://youtu.be/QsH6ytm89GI)\](<https://youtu.be/QsH6ytm89GI>))
+-   [Ceballos et al
+    (2015)](%5Bhttp://doi.org/10.1126/sciadv.1400253)\](<http://doi.org/10.1126/sciadv.1400253>))
+-   <http://www.hhmi.org/biointeractive/biodiversity-age-humans> (Video)
+-   [Barnosky et al. (2011)](http://doi.org/10.1038/nature09678)
+-   [Pimm et al (2014)](http://doi.org/10.1126/science.1246752)
+-   [Sandom et al (2014)](http://dx.doi.org/10.1098/rspb.2013.3254)
