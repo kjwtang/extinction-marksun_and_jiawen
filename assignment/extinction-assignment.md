@@ -14,25 +14,24 @@ compare to background extinction rates?
 -   [Section Intro Video](https://youtu.be/QsH6ytm89GI)
 -   [Ceballos et al (2015)](http://doi.org/10.1126/sciadv.1400253)
 
-Our focal task will be to reproduce the result from Ceballos and
-colleagues showing the recent increase in extinction rates relative to
+Our main goal will be to reproduce the result from Ceballos and
+colleagues, showing the recent increase in extinction rates relative to
 the background rate:
 
 ![](https://espm-157.carlboettiger.info/img/extinctions.jpg)
 
-Before everything starts, we will set up the functions that we need to
-use to run the code”
+Before everything starts, we set up the functions that we need to use to
+run the code
 
 ## Data Download
 
-We will download the data taht we need from ICUN redlist so we can start
-do anlysis from it. Since the orginal website is slow as multiple
-request starts at the same time, we will extract the data from the
-pre-download zip from our github.
+We download the data that we need from ICUN redlist. Since the original
+website is slow as multiple request start at the same time, we extract
+data from the pre-download zip from our github.
 
-To keep things simple, we will create a local version of rds so we do
-not need to download it again and again. This rds will be our data to
-look at.
+To keep things simple, we create a local version of rds so we do not
+need to download it again and again. This rds will be our data to look
+at.
 
 ``` r
  if(!file.exists("all_species.rds")) {
@@ -42,10 +41,9 @@ look at.
  }
 ```
 
-So setups are finished and we can load the data! From here we will start
-doing data anylsis and to extract the information to answer our
-question, if the sixth extinction happens and how does it compares to
-the backgroup extinction rate.
+So setups are finished and we can load the data! From here we begin our
+data analysis to to answer our question: if the sixth extinction is
+happening, and how does it compare to the backgroud extinction rate?
 
 ``` r
 all_species<- read_rds("all_species.rds")
@@ -53,12 +51,12 @@ all_resp <- map(all_species, content, encoding = "UTF-8")
 ```
 
 So now we find out there are so many information in the dataset, we will
-find the things that are useful. We want to know the scientific name of
-the species, their category and the class that they are belongs to.
-After we get these information, merge them into a list that we call “all
+extract information that are most helpful. We want to know the
+scientific name of the species, their category, and their class. After
+getting these information, we merge them into a list that we call “all
 species”. Since we want to focus on the extinction species, we will
-filter the category by “EX”, which in IUCN is stands for extinction. In
-this case, we will have the whole list of species that are extinct.
+filter the category by “EX”, whichstands for extinction. In this case,
+we have the whole list of species that are extinct.
 
 ``` r
 sci_name <- map(all_resp, \(page) map_chr(page$result,"scientific_name")) |>
@@ -94,7 +92,7 @@ extinct_species
 ex_sci_name <-extinct_species$sci_name
 ```
 
-Since its still a lot of data, we want to storage it to local to save
+Since it’s still a lot of data, we want to storage it to local to save
 our process as well. rds will be our working format and we do the same
 things as before.
 
@@ -116,7 +114,7 @@ ex_narrative <-read_rds("ex_narrative.rds")
 So we want to use map function to extract the information from the rds
 file to the list of words that can have information about the extinction
 data. These information will be in plain text that is not in a
-consistant format that we can find the number directly.
+consistent format that we can find the number directly.
 
 ``` r
 narrative_contents <- map(ex_narrative,content)
