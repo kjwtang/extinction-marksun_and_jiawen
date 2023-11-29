@@ -12,9 +12,6 @@ future of conservation effort.
 
 ## Background
 
-- [Section Intro Video](https://youtu.be/QsH6ytm89GI)
-- [Ceballos et al (2015)](http://doi.org/10.1126/sciadv.1400253)
-
 In this report, we aim to reproduce the extinction graph from the above
 paper of Ceballos and colleagues. We want to show the recent increase in
 extinction rates relative to the background rate:
@@ -257,8 +254,12 @@ of the fragile environment suitable for human survival. In a warming
 climate, extinction rates will only increase. We need to pay special
 attention, otherwise the future extinction may be the human race.
 
-## Additional references:
+## References:
 
+- [Section Intro
+  Video](%5Bhttps://youtu.be/QsH6ytm89GI)\](<https://youtu.be/QsH6ytm89GI>))
+- [Ceballos et al
+  (2015)](%5Bhttp://doi.org/10.1126/sciadv.1400253)\](<http://doi.org/10.1126/sciadv.1400253>))
 - <http://www.hhmi.org/biointeractive/biodiversity-age-humans> (Video)
 - [Barnosky et al. (2011)](http://doi.org/10.1038/nature09678)
 - [Pimm et al (2014)](http://doi.org/10.1126/science.1246752)
