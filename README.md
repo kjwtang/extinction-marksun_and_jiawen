@@ -6,27 +6,10 @@
 - Jiawen Tang, kjwtang
 - Mark Sun, github handle
 
-This repository is a template for your team's repository.
+## Project
 
-## assignment
+All of our project are in the `assignment` directory.  We worked in the `.Rmd` notebook, and commited our rendered output files (`.md` and associated files) in the `assignment` directory as well.
 
-All work for this assignment should be in the `assignment` directory.  You will work in the `.Rmd` notebook, and commit your rendered output files (`.md` and associated files) in the `assignment` directory as well.
-
-## Special files
-
-All team repositories will also include most of the special files found here:
-
-### Common files
-
-- `README.md` this file, a general overview of the repository in markdown format.  
-- `.gitignore` Optional file, ignore common file types we don't want to accidentally commit to GitHub. Most projects should use this. 
-- `<REPO-NAME>.Rproj` Optional, an R-Project file created by RStudio for it's own configuration.  Some people prefer to `.gitignore` this file.
-
-
-### Infrastructure for Testing
-
-- `DESCRIPTION` a metadata file for the repository, based on the R package standard. It's main purpose here is as a place to list any additional R packages/libraries needed for any of the `.Rmd` files to run.
-
-
+In this report, we aim to show the recent trends in extinction rates of different animal groups relative to the background rate. Our main goal is to view the current pace of extinction in comparison to background extinction rates, which informs the conservation challenge facing us. We found that all animal groups have experienced drstically increasing extinction rate from 18 to 19th century, resulted from to a large extent human activities that may include direct hunting and habitat destruction. The extinction rates all go significantly higher than the background extinction rate. The graph we created indicated that extinction rates is increasing and may lead to the "sixth mass extinction" in future if we humans exacerbate our negative impacts of ecosystem, such as climate change. We need to pay special attention to conservation of nature, otherwise the future extinction may happen to the human race.
 
 
