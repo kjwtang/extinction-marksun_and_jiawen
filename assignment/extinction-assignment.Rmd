@@ -7,16 +7,16 @@ output: github_document
 
 ## The Sixth Great Extinctions
 
-*Are we experiencing the sixth great extinction?*
+*Is "the 6th mass extinction" coming, or is it just an allusion ?*
 
-What is the current pace of extinction? Is it accelerating? How does it compare to background extinction rates?
+Understanding the current pace of extinction and how it compares with the background extinction rate is important, as it will inform us the future of conservation effort.
 
 ## Background
 
 -   [Section Intro Video](https://youtu.be/QsH6ytm89GI)
 -   [Ceballos et al (2015)](http://doi.org/10.1126/sciadv.1400253)
 
-Our main goal will be to reproduce the result from Ceballos and colleagues, showing the recent increase in extinction rates relative to the background rate:
+In this report, we aim to reproduce the extinction graph from the above paper of Ceballos and colleagues. We want to show the recent increase in extinction rates relative to the background rate:
 
 ![](https://espm-157.carlboettiger.info/img/extinctions.jpg)
 
