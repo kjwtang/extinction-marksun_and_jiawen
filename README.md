@@ -4,7 +4,7 @@
 ## Team Members:
 
 - Jiawen Tang, kjwtang
-- Mark Sun, github handle
+- Mark Sun, MarkSun2001
 
 ## Project
 
